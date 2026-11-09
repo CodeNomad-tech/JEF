@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ report.title }} | JEF Reports{% endblock %}
+{% block content %}
+<section class="page-section">
+  <article class="wrap report-detail">
+    <a href="{{ url_for('reports') }}">&larr; All reports</a>
+    <h1 class="page-title">{{ report.title }}</h1>
+    <time datetime="{{ report.published_at }}">Published {{ report.published_at[:10] }}</time>
+    {% if report.image_filename %}
+      <img class="report-image report-detail-image" src="{{ url_for('report_image', report_id=report.id) }}" alt="Image for {{ report.title }}">
+    {% endif %}
+    {% if report.description %}<p class="report-description">{{ report.description }}</p>{% endif %}
+    <p><a class="btn" href="{{ url_for('report_pdf', report_id=report.id, download=1) }}">Download PDF</a></p>
+    <iframe class="report-viewer" src="{{ url_for('report_pdf', report_id=report.id) }}" title="Full report: {{ report.title }}"></iframe>
+    <p>Your browser may not support embedded PDFs. <a href="{{ url_for('report_pdf', report_id=report.id) }}">Open the report PDF</a>.</p>
+  </article>
+</section>
+{% endblock %}

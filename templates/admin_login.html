@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Admin sign in | JEF{% endblock %}
+{% block content %}
+<section class="page-section">
+  <div class="wrap admin-panel narrow">
+    <h1 class="page-title">Admin sign in</h1>
+    {% if configuration_error %}
+      <p class="flash error" role="alert">Admin access is not configured. Set ADMIN_PASSWORD and a strong SECRET_KEY in the server environment.</p>
+    {% else %}
+      <p>Sign in to publish JEF reports.</p>
+      <form method="post" action="{{ url_for('admin_login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <label>Admin password<input type="password" name="password" required autocomplete="current-password"></label>
+        <button class="btn" type="submit">Sign in</button>
+        {% with msgs = get_flashed_messages(with_categories=true) %}
+          {% for cat, message in msgs %}<p class="flash {{ cat }}" role="alert">{{ message }}</p>{% endfor %}
+        {% endwith %}
+      </form>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

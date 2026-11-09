@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block body_class %}landing-mode{% endblock %}
+{% block content %}
+<section id="welcome" class="welcome" aria-labelledby="welcome-title">
+<div class="wrap welcome-content">
+  <div class="welcome-mark" aria-hidden="true"><span>J</span><span>E</span><span>F</span></div>
+  <p class="welcome-label">Jonuel Entrepreneurship Foundation</p>
+  <h1 id="welcome-title">Empowering minds.<br>Transforming futures.</h1>
+  <p class="welcome-copy">A youth-led Zambian nonprofit creating opportunities for young people, women and persons with disabilities.</p>
+  <a id="explore-jef" class="btn" href="#site-content">Explore JEF <span aria-hidden="true">&rarr;</span></a>
+  <a class="welcome-admin" href="{{ url_for('admin_login') }}">Admin sign in</a>
+</div>
+</section>
+<div id="site-content">
+<div class="wrap hero dashboard-hero">
+    <div class="hero-grid">
+      <div>
+        <h1>Empowering minds. Transforming futures.</h1>
+        <p class="lead">JEF is a youth-led Zambian nonprofit in Mongu, Western Province. We help young people, women and persons with disabilities build skills, start enterprises and take part in their communities.</p>
+        <a class="btn" href="#join">Partner or volunteer</a><a class="btn alt" href="#contact">Contact us</a>
+        <div class="stats"><div><b>6,710</b><span>youths and women reached since 2021</span></div><div><b>2020</b><span>founded in Mongu</span></div><div><b>PACRA</b><span>registered company by guarantee</span></div></div>
+      </div>
+      <div class="mark" aria-hidden="true"><span class="j">J</span><span class="e">E</span><span class="f">F</span></div>
+    </div>
+  </div>
+
+  <section id="about"><div class="wrap about">
+    <div>
+      <h2>About JEF</h2>
+      <p>The Jonuel Entrepreneurship Foundation was founded in 2020 by Mr. Chindele Chingumbe as a direct response to youth unemployment, poverty and limited economic opportunity in Western Province.</p>
+      <p>We believe that even if we cannot change the whole world, we can change the environment around us, by nurturing self-reliant, community-driven young people who become the architects of their own futures.</p>
+    </div>
+    <div>
+      <img class="fphoto" src="{{ url_for('static', filename='img/founder.jpg') }}" alt="Mr. Chindele Chingumbe, Founder and Executive Director of JEF">
+      <div class="fcap">Mr. Chindele Chingumbe<span>Founder and Executive Director</span></div>
+    </div>
+  </div></section>
+
+  <section id="vision"><div class="wrap">
+    <div class="vm">
+      <div><h3>Our vision</h3><p>A Zambia where every young person is skilled, productive and purpose-driven, transforming potential into impact and creating pathways for inclusive economic and social development.</p></div>
+      <div class="mission"><article><h3>Our mission</h3><p>To nurture a generation of empowered, ethical and innovative young Zambians through practical training, mentorship and institutional collaboration that bridges the gap between education, employment and enterprise creation.</p></article><img src="{{ url_for('static', filename='img/team-member.jpg') }}" alt="A JEF team member"></div>
+    </div>
+  </div></section>
+
+  <section id="programs"><div class="wrap">
+    <h2>Our five focus areas</h2>
+    <p class="sub">Each area is grounded in community need and a commitment to inclusive development.</p>
+    <div class="cards">
+      <article class="card"><h3>Skills and entrepreneurship</h3><p>Practical training in agriculture, tailoring, digital technology and business, with mentorship and incubation support.</p></article>
+      <article class="card"><h3>Governance and civic advocacy</h3><p>Civic literacy, youth participation in decision-making and advocacy for accountable leadership.</p></article>
+      <article class="card"><h3>Gender justice and SRH</h3><p>Awareness campaigns and community dialogues on gender-based violence, early marriage and reproductive health.</p></article>
+      <article class="card"><h3>Climate change and agriculture</h3><p>Climate-smart farming, agribusiness and fresh produce skills for young agripreneurs.</p></article>
+      <article class="card"><h3>Mental health support</h3><p>Awareness, peer support and psychosocial tools that build emotional resilience among youth.</p></article>
+    </div>
+  </div></section>
+
+  <section id="impact"><div class="wrap">
+    <h2>What we have done</h2>
+    <p class="sub">Programs that have helped participants start farms, tailoring businesses and digital careers.</p>
+    <div class="cards">
+      <article class="card"><h3>Agribusiness</h3><p>Training in backyard gardening, poultry production and climate-smart agriculture.</p></article>
+      <article class="card"><h3>Digital skills</h3><p>Computing, Microsoft Office, graphic design, digital marketing and data entry.</p></article>
+      <article class="card"><h3>Tailoring and fashion</h3><p>Tailoring, cutting and fashion design, especially for young women.</p></article>
+      <article class="card"><h3>Fairs and summits</h3><p>Entrepreneurship skills fairs and youth summits connecting people with mentors and markets.</p></article>
+    </div>
+  </div></section>
+
+  <section id="team"><div class="wrap">
+    <h2>Leadership</h2>
+    <p class="sub">JEF is led by a youth-led team of office bearers.</p>
+    <div class="people">
+      <div class="person"><img src="{{ url_for('static', filename='img/founder.jpg') }}" alt="Mr. Chindele Chingumbe"><div class="fcap">Mr. Chindele Chingumbe<span>Founder and Executive Director</span></div></div>
+      <div class="person"><img src="{{ url_for('static', filename='img/jimmy.jpg') }}" alt="Mr. Jimmy Sakala"><div class="fcap">Mr. Jimmy Sakala<span>Head of IT</span></div></div>
+    </div>
+  </div></section>
+
+  <section id="join"><div class="wrap">
+    <div class="join">
+      <h2>Partner with JEF</h2>
+      <p>We work with government ministries, schools, colleges, NGOs and youth networks. If you want to fund, partner or volunteer, send us a message.</p>
+      <a class="btn" href="#contact">Email JEF</a>
+    </div>
+  </div></section>
+
+  <section id="reports"><div class="wrap">
+    <h2>Reports</h2>
+    <p class="sub">Read updates and reports on JEF's work and impact.</p>
+    {% if reports %}
+      <div class="report-list">
+        {% for report in reports %}
+          <article class="report-card">
+            {% if report.image_filename %}
+              <img class="report-image" src="{{ url_for('report_image', report_id=report.id) }}" alt="Image for {{ report.title }}">
+            {% endif %}
+            <h3><a href="{{ url_for('report_detail', report_id=report.id) }}">{{ report.title }}</a></h3>
+            <p>{{ report.description or "Read the full report." }}</p>
+            <time datetime="{{ report.published_at }}">{{ report.published_at[:10] }}</time>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="note">Reports will be published here.</p>
+    {% endif %}
+    <a class="btn alt" href="{{ url_for('reports') }}">View all reports</a>
+  </div></section>
+
+  <section id="contact"><div class="wrap contact">
+    <div>
+      <h2>Contact us</h2>
+      <dl>
+        <dt>Office</dt><dd>Old Vision Empire Building, Chisonga Rd, Mongu, Western Province, Zambia</dd>
+        <dt>Email</dt><dd><a href="mailto:{{ org.email }}">{{ org.email }}</a></dd>
+        <dt>Phone</dt><dd><a href="tel:+260979298827">+260 979 298 827</a><br><a href="tel:+260977721681">+260 977 721 681</a></dd>
+      </dl>
+    </div>
+    <form method="post" action="{{ url_for('contact') }}" aria-label="Contact form">
+      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label>Your name<input name="name" required maxlength="100" autocomplete="name"></label>
+      <label>Your email<input name="email" type="email" required maxlength="150" autocomplete="email"></label>
+      <label>Message<textarea name="msg" required maxlength="3000"></textarea></label>
+      <button class="btn" type="submit">Send message</button>
+      {% with msgs = get_flashed_messages(with_categories=true) %}
+        {% for cat, m in msgs %}<p class="note flash {{ cat }}" role="status">{{ m }}</p>{% endfor %}
+      {% endwith %}
+    </form>
+  </div></section>
+  </div>
+<script>
+  document.getElementById("explore-jef").addEventListener("click", function () {
+    document.body.classList.remove("landing-mode");
+    document.getElementById("welcome").hidden = true;
+  });
+</script>
+{% endblock %}

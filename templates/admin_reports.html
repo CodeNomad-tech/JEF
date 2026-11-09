@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Manage reports | JEF{% endblock %}
+{% block content %}
+<section class="page-section">
+  <div class="wrap admin-panel">
+    <div class="admin-heading">
+      <div>
+        <h1 class="page-title">Manage reports</h1>
+        <p>Publish a PDF report for visitors to read, with an optional image.</p>
+      </div>
+      <form method="post" action="{{ url_for('admin_logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="btn alt" type="submit">Sign out</button>
+      </form>
+    </div>
+    <form method="post" action="{{ url_for('admin_reports') }}" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label>Report title<input name="title" required maxlength="160"></label>
+      <label>Short description (optional)<textarea name="description" maxlength="2000"></textarea></label>
+      <label>Report PDF<input type="file" name="pdf" accept="application/pdf,.pdf" required></label>
+      <label>Report image (optional)<input type="file" name="image" accept="image/png,image/jpeg,image/gif,image/webp,.png,.jpg,.jpeg,.gif,.webp"></label>
+      <p class="note">Images: PNG, JPEG, GIF or WebP, up to 5 MB. The PDF and image together must be under 20 MB.</p>
+      <button class="btn" type="submit">Publish report</button>
+      {% with msgs = get_flashed_messages(with_categories=true) %}
+        {% for cat, message in msgs %}<p class="flash {{ cat }}" role="status">{{ message }}</p>{% endfor %}
+      {% endwith %}
+    </form>
+    <h2>Published reports</h2>
+    {% if reports %}
+      <div class="report-list">
+        {% for report in reports %}
+          <article class="report-card">
+            <h3><a href="{{ url_for('report_detail', report_id=report.id) }}">{{ report.title }}</a></h3>
+            <time datetime="{{ report.published_at }}">{{ report.published_at[:10] }}</time>
+            <form method="post" action="{{ url_for('delete_report', report_id=report.id) }}" onsubmit="return confirm('Delete this report and its uploaded files?');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <button class="btn alt" type="submit">Delete report</button>
+            </form>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No reports published yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Reports | Jonuel Entrepreneurship Foundation{% endblock %}
+{% block content %}
+<section class="page-section">
+  <div class="wrap">
+    <h1 class="page-title">JEF reports</h1>
+    <p class="sub">Reports and updates about our programs and their impact.</p>
+    <p><a class="btn alt" href="{{ url_for('admin_login') }}">Admin sign in to publish</a></p>
+    {% if reports %}
+      <div class="report-list">
+        {% for report in reports %}
+          <article class="report-card">
+            {% if report.image_filename %}
+              <img class="report-image" src="{{ url_for('report_image', report_id=report.id) }}" alt="Image for {{ report.title }}">
+            {% endif %}
+            <h2><a href="{{ url_for('report_detail', report_id=report.id) }}">{{ report.title }}</a></h2>
+            <p>{{ report.description or "Read the full report." }}</p>
+            <time datetime="{{ report.published_at }}">{{ report.published_at[:10] }}</time>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No reports have been published yet.</p>
+    {% endif %}
+    <p><a href="{{ url_for('index') }}">Back to JEF home</a></p>
+  </div>
+</section>
+{% endblock %}

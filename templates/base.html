@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}Jonuel Entrepreneurship Foundation (JEF){% endblock %}</title>
+<meta name="description" content="JEF is a youth-led Zambian nonprofit in Mongu, Western Province, empowering youth, women and persons with disabilities through skills and entrepreneurship.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="{{ url_for('index') }}#top" aria-label="JEF home"><span class="dots" aria-hidden="true"><i style="background:#1f9d55">J</i><i style="background:#2a9fe0">E</i><i style="background:#e8392f">F</i></span>Jonuel Entrepreneurship Foundation</a>
+    <nav aria-label="Main">
+      <a href="{{ url_for('index') }}#about">About</a><a href="{{ url_for('index') }}#programs">Focus areas</a><a href="{{ url_for('index') }}#team">Team</a><a href="{{ url_for('reports') }}">Reports</a><a href="{{ url_for('index') }}#join">Partner</a><a href="{{ url_for('index') }}#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+{% block content %}{% endblock %}
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><strong style="font-family:'Bricolage Grotesque',sans-serif">Jonuel Entrepreneurship Foundation (JEF)</strong><br>Old Vision Empire Building, Chisonga Rd, Mongu, Western Province</div>
+      <div><a href="mailto:{{ org.email }}">{{ org.email }}</a><br>+260 979 298 827 / +260 977 721 681 / +260 967 645 429</div>
+    </div>
+    <div class="copy">&copy; {{ year }} Jonuel Entrepreneurship Foundation (JEF). All rights reserved. <a href="{{ url_for('admin_login') }}">Admin</a></div>
+  </div>
+</footer>
+</body>
+</html>
