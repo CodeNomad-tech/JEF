@@ -1,0 +1,14 @@
+{% macro yt(id, title) %}<figure class="video"><iframe src="https://www.youtube-nocookie.com/embed/{{ id }}" title="{{ title }}" loading="lazy" allowfullscreen></iframe><figcaption>{{ title }} &middot; <a href="https://www.youtube.com/watch?v={{ id }}" target="_blank" rel="noopener">Watch on YouTube</a></figcaption></figure>{% endmacro %}
+{% macro ph(label, note='') %}<div class="ph" role="img" aria-label="Photo space: {{ label }}"><b>Photo to be added</b><span>{{ label }}</span>{% if note %}<small>{{ note }}</small>{% endif %}</div>{% endmacro %}
+{% macro form(kind) %}{% set f = FORMS[kind] %}
+<form method="post" action="{{ url_for('submit', kind=kind) }}" id="form-{{ kind }}" aria-label="{{ f.title }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="next" value="{{ request.path }}#form-{{ kind }}">
+  <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+  {% for n, l, t, req, opts in f.fields %}<label>{{ l }}{% if req %} *{% endif %}
+    {% if t == 'textarea' %}<textarea name="{{ n }}" maxlength="3000" {{ 'required' if req }}>{{ request.args.get(n, '') }}</textarea>
+    {% elif t == 'select' %}<select name="{{ n }}" {{ 'required' if req }}><option value="">Select&hellip;</option>{% for o in opts %}<option>{{ o }}</option>{% endfor %}</select>
+    {% else %}<input name="{{ n }}" type="{{ t }}" maxlength="150" value="{{ request.args.get(n, '') }}" {{ 'required' if req }}>{% endif %}</label>{% endfor %}
+  <button class="btn" type="submit">{{ f.button }}</button>
+  <p class="note">We use your details only to respond to you. See our <a href="{{ url_for('contact_page') }}#privacy">privacy notice</a>.</p>
+</form>{% endmacro %}
+{% macro head(title, lead) %}<div class="wrap"><h1 class="page-title">{{ title }}</h1>{% if lead %}<p class="lead">{{ lead }}</p>{% endif %}</div>{% endmacro %}

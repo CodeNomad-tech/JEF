@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{% block title %}Jonuel Entrepreneurship Foundation (JEF){% endblock %}</title>
 <meta name="description" content="JEF is a youth-led Zambian nonprofit in Mongu, Western Province, empowering youth, women and persons with disabilities through skills and entrepreneurship.">
+<script>try{var t=localStorage.getItem("jef-theme");if(t==="dark")document.documentElement.setAttribute("data-theme","dark");else document.documentElement.setAttribute("data-theme","light")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -12,25 +13,107 @@
 <body class="{% block body_class %}{% endblock %}">
 <header>
   <div class="wrap bar">
-    <a class="brand" href="{{ url_for('index') }}#top" aria-label="JEF home"><span class="dots" aria-hidden="true"><i style="background:#1f9d55">J</i><i style="background:#2a9fe0">E</i><i style="background:#e8392f">F</i></span>Jonuel Entrepreneurship Foundation</a>
-    <nav aria-label="Main">
-      <a href="{{ url_for('index') }}#about">About</a><a href="{{ url_for('index') }}#programs">Focus areas</a><a href="{{ url_for('index') }}#team">Team</a><a href="{{ url_for('reports') }}">Reports</a><a href="{{ url_for('index') }}#join">Partner</a><a href="{{ url_for('index') }}#contact">Contact</a>
-    </nav>
+    <a class="brand" href="{{ url_for('index') }}#top" aria-label="JEF home">
+      <span class="dots" aria-hidden="true"><i style="background:#1f9d55">J</i><i style="background:#2a9fe0">E</i><i style="background:#e8392f">F</i></span>
+      Jonuel Entrepreneurship Foundation
+    </a>
+    <div class="bar-actions">
+      <button class="theme-btn" type="button" aria-label="Switch colour theme" title="Switch between light and dark mode"><span aria-hidden="true">&#9680;</span> <span class="theme-label">Dark</span></button>
+      <button class="nav-fab" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open navigation menu">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6"  x2="19" y2="6"/>
+          <line x1="3" y1="11" x2="19" y2="11"/>
+          <line x1="3" y1="16" x2="19" y2="16"/>
+        </svg>
+        <span class="nav-fab-label">Menu</span>
+      </button>
+    </div>
+  </div>
+  <div id="site-menu" class="site-menu" role="dialog" aria-label="Navigation menu">
+    <div class="site-menu-inner wrap">
+      <p class="site-menu-brand" aria-hidden="true"><strong>Navigate</strong></p>
+      <nav aria-label="Main">
+        <a href="{{ url_for('index') }}#site-content">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+        <a href="{{ url_for('about_page') }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          About Us
+        </a>
+        <a href="{{ url_for('what_we_do_page') }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          What We Do
+        </a>
+        <a href="{{ url_for('financial_literacy_page') }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Financial Literacy
+        </a>
+        <a href="{{ url_for('yesdf_page') }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          YESDF Fellowship
+        </a>
+        <a href="{{ url_for('impact_page') }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Impact
+        </a>
+        <a href="{{ url_for('news') }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><line x1="7" y1="9" x2="13" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+          News
+        </a>
+        <a href="{{ url_for('get_involved_page') }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Get Involved
+        </a>
+        <a href="{{ url_for('contact_page') }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact
+        </a>
+      </nav>
+      <div class="site-menu-ctas">
+        <a class="btn" href="{{ url_for('yesdf_page') }}#apply">Apply to YESDF</a>
+        <a class="btn alt" href="{{ url_for('get_involved_page') }}#partner">Partner With Us</a>
+      </div>
+    </div>
   </div>
 </header>
 
 <main id="top">
+{% with msgs = get_flashed_messages(with_categories=true) %}{% if msgs %}<div class="wrap" id="flash">{% for cat, m in msgs %}<p class="flashbar {{ cat }}" role="status">{{ m }}</p>{% endfor %}</div>{% endif %}{% endwith %}
 {% block content %}{% endblock %}
 </main>
 
 <footer>
   <div class="wrap">
     <div class="fgrid">
-      <div><strong style="font-family:'Bricolage Grotesque',sans-serif">Jonuel Entrepreneurship Foundation (JEF)</strong><br>Old Vision Empire Building, Chisonga Rd, Mongu, Western Province</div>
-      <div><a href="mailto:{{ org.email }}">{{ org.email }}</a><br>+260 979 298 827 / +260 977 721 681 / +260 967 645 429</div>
+      <div><strong style="font-family:'Bricolage Grotesque',sans-serif">Jonuel Entrepreneurship Foundation (JEF)</strong><br><em>Empowering Minds. Transforming Futures.</em><br>A Zambian youth-led nonprofit based in Mongu, Western Province. Registered with PACRA as a Company by Guarantee.</div>
+      <div class="flinks"><b>Quick links</b><a href="{{ url_for('about_page') }}">About Us</a><a href="{{ url_for('what_we_do_page') }}">What We Do</a><a href="{{ url_for('financial_literacy_page') }}">Financial Literacy</a><a href="{{ url_for('yesdf_page') }}">YESDF Fellowship</a><a href="{{ url_for('impact_page') }}">Impact</a><a href="{{ url_for('news') }}">News</a><a href="{{ url_for('get_involved_page') }}">Get Involved</a><a href="{{ url_for('contact_page') }}">Contact</a></div>
+      <div>Land of Hope Shop, Ilute Area, Mongu, Zambia<br><a href="mailto:{{ org.email }}">{{ org.email }}</a><br>+260 979 298 827 | +260 977 721 681<br>+260 967 645 429 | +260 977 853 674</div>
+      <div class="news-box"><b>Stay in the loop.</b><br>Get news on programmes, events and fellowship applications.
+        <form method="post" action="{{ url_for('submit', kind='newsletter') }}" aria-label="Newsletter"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="next" value="{{ request.path }}"><input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><label class="sr">Email address<input name="email" type="email" required placeholder="Email address"></label><button class="btn sm" type="submit">Subscribe</button></form></div>
     </div>
-    <div class="copy">&copy; {{ year }} Jonuel Entrepreneurship Foundation (JEF). All rights reserved. <a href="{{ url_for('admin_login') }}">Admin</a></div>
+    <div class="copy">&copy; {{ year }} Jonuel Entrepreneurship Foundation. All rights reserved. | <a href="{{ url_for('contact_page') }}#privacy">Privacy Policy</a> <a href="{{ url_for('admin_login') }}">Admin</a></div>
   </div>
 </footer>
+<script>
+(function(){
+  var fab=document.querySelector(".nav-fab");
+  var menu=document.getElementById("site-menu");
+  if(!fab||!menu)return;
+  function close(){menu.classList.remove("open");fab.setAttribute("aria-expanded","false");document.removeEventListener("click",outside);}
+  function outside(e){if(!menu.contains(e.target)&&!fab.contains(e.target))close();}
+  fab.addEventListener("click",function(){
+    var open=menu.classList.toggle("open");
+    fab.setAttribute("aria-expanded",open);
+    if(open)setTimeout(function(){document.addEventListener("click",outside)},0);
+    else document.removeEventListener("click",outside);
+  });
+  menu.querySelectorAll("nav a").forEach(function(a){a.addEventListener("click",close)});
+})();
+</script>
+<script>(function(){var b=document.querySelector(".theme-btn");if(!b)return;var r=document.documentElement,l=b.querySelector(".theme-label");
+function cur(){var t=r.getAttribute("data-theme");return t||(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}
+function sync(){var d=cur()==="dark";l.textContent=d?"Light":"Dark";b.setAttribute("aria-pressed",d)}
+b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.setAttribute("data-theme",n);try{localStorage.setItem("jef-theme",n)}catch(e){}sync()});sync()})();</script>
 </body>
 </html>

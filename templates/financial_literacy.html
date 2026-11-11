@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% from "macros.html" import yt, ph, form, head with context %}
+{% block title %}Financial Literacy in Zambia | JEF, TFAF and CFLE-Africa{% endblock %}
+{% block content %}
+<section class="page-section">{{ head('Financial Awareness & Financial Literacy') }}
+<div class="wrap">
+<nav class="subnav" aria-label="Financial literacy sections"><a href="#overview">Movement Overview</a><a href="#learning">Learning Centre</a><a href="#april">April Archive</a><a href="#october">October Archive</a><a href="#associations">FA Associations</a><a href="#ambassadors">Ambassadors</a><a href="#community">Community Engagement</a><a href="#updates">News and Publications</a><a href="#partner-movement">Partnerships</a></nav>
+
+<h2 id="overview">The Improving Financial Awareness &amp; Financial Literacy Movement in Zambia</h2>
+<p>The Improving Financial Awareness &amp; Financial Literacy Movement in Zambia&trade; is a collaborative initiative that seeks to improve access to financial education and empower individuals, families, young people, entrepreneurs and communities to make informed financial decisions.</p>
+<p>JEF&rsquo;s growing financial-awareness and financial-literacy work is strengthened through collaboration with The Financial Awareness Foundation (TFAF) and the Centre for Financial Literacy Education Africa (CFLE-Africa), with Mr. Prince Kapeya serving as Lead TFAF Ambassador - Zambia.</p>
+<p>The work reflects a simple principle: financial strength is not determined by how much money someone has, but by how wisely they manage what they have.</p>
+<p>Our vision is to build financially informed young people who become financially responsible individuals, sustainable entrepreneurs and active co-creators of Zambia&rsquo;s development.</p>
+<h3>Our strategic direction</h3>
+<p>The movement aims to make financial education more accessible through public awareness campaigns, educational materials, university and college Financial Awareness Associations, trained student leaders, community engagement, youth networks, and collaboration with entrepreneurs and SMEs.</p>
+<p>The movement is designed to complement existing financial literacy efforts in Zambia, build on what is already working, and encourage collaboration rather than duplication.</p>
+<h3>Our strategic framework</h3>
+<p>Read the Zambia Executive Summary / Overview of The Improving Financial Awareness &amp; Financial Literacy Movement:</p>
+<ul class="links"><li><a href="https://home.thefinancialawarenessfoundation.org/pdf/TFAF-TIFA-FLMovement-Zambia-ExecSum.pdf" target="_blank" rel="noopener">TFAF - Zambia Executive Summary / Overview</a></li>
+<li><a href="https://www.facebook.com/p/Jonuel-Entrepreneurship-FoundationJEF-100086484158409/" target="_blank" rel="noopener">JEF official Facebook page</a></li></ul>
+<p class="disclaimer">This section offers general financial education. It is not individual financial, legal, tax or investment advice. Please consult a qualified professional about your own circumstances.</p>
+
+<h2 id="learning">Educational Resources and Learning Centre</h2>
+<p>Explore educational materials and practical learning resources on the following subjects:</p>
+<div class="two"><ul class="checklist"><li>Personal financial management and financial planning</li><li>Budgeting, saving and responsible spending</li><li>Debt management and responsible borrowing</li><li>Financial decision-making and sustainable money habits</li><li>Entrepreneurship and business finance</li></ul>
+<ul class="checklist"><li>Understanding financial products and investments</li><li>Financial records and asset protection</li><li>Estate and gift planning</li><li>Financial planning for young people and families</li><li>Planning for future needs and passing on values and assets</li></ul></div>
+<p>Resource formats may include approved downloadable publications, articles, presentations, videos, infographics, assessments and external learning materials. Additional materials will be added as they are approved and made available.</p>
+<p><a class="btn" href="https://home.thefinancialawarenessfoundation.org/publications.html" target="_blank" rel="noopener">TFAF Publications and Educational Resources</a></p>
+
+<h2 id="april">April Financial Literacy Month - 2026 Campaign Archive</h2>
+<p><strong>Theme: Smart Money Habits for a Financially Confident Generation.</strong></p>
+<p>In April 2026, JEF helped launch The Improving Financial Awareness &amp; Financial Literacy Movement in Zambia while celebrating Financial Literacy Month. The programme included an official online launch, a four-week educational series featuring young people and student voices - including panellists from Chalimbana University and ZCAS University - and a 30-day digital financial-literacy challenge.</p>
+<p>Topics included budgeting, saving, responsible spending, financial decision-making, entrepreneurship and sustainable money habits.</p>
+<h3>Watch the April 2026 sessions</h3>
+<div class="video-grid">{% for id, t in APR %}{{ yt(id, t) }}{% endfor %}</div>
+
+<h2 id="october">October Estate &amp; Gift Planning Awareness Month - 2026 Campaign Archive</h2>
+<p><strong>Theme: From Financial Awareness to Lasting Wealth: Planning, Protecting and Preserving What We Build.</strong></p>
+<p>In October 2026, JEF and its partners advanced financial awareness through four recorded online webinars, television and radio engagements, and a physical Financial Awareness Action Clinic in Mongu, Western Province.</p>
+<h3>Four online webinar sessions</h3>
+<div class="video-grid">
+<div><h4>Session 1 - Get &amp; Keep Your Financial House in Order</h4><p class="note">A discussion on organising personal finances and strengthening everyday money management.</p>{{ yt('pP-W9_vVxN8', 'Session 1 - Get & Keep Your Financial House in Order') }}</div>
+<div><h4>Session 2 - Building, Protecting &amp; Growing What You Have</h4><p class="note">A discussion on building resources, protecting assets and making informed financial decisions.</p>{{ yt('SU7ByKixKbc', 'Session 2 - Building, Protecting & Growing What You Have') }}</div>
+<div><h4>Session 3 - Why Estate &amp; Gift Planning Matters</h4><p class="note">A discussion on the importance of planning for the future and protecting family interests.</p>{{ yt('D-cOYNRwXhQ', 'Session 3 - Why Estate & Gift Planning Matters') }}</div>
+<div><h4>Session 4 - From Awareness to Action: Practical Steps to Plan, Protect and Build a Lasting Legacy</h4><p class="note">A practical discussion on turning financial awareness into action.</p>{{ yt('7UlgKXYVIF0', 'Session 4 - From Awareness to Action') }}</div></div>
+
+<h3>Mongu Financial Awareness Action Clinic</h3>
+<p>On 29 October 2026, the physical Financial Awareness Action Clinic was held at Lewanika College of Nursing in Mongu, Western Province. The clinic provided an opportunity to bring financial awareness from online discussions into practical community engagement.</p>
+<p>A key highlight was the induction of 11 Financial Awareness Ambassadors, an important step towards strengthening youth participation and expanding financial education within communities.</p>
+<p>The event received media coverage from:</p>
+<ul class="links"><li><a href="https://www.facebook.com/share/v/1EcdcXcX8d/?mibextid=wwXIfr" target="_blank" rel="noopener">Bulozi TV - Action Clinic coverage</a></li>
+<li><a href="https://www.facebook.com/share/r/18zLvp4BuV/?mibextid=wwXIfr" target="_blank" rel="noopener">Prime TV - Action Clinic coverage</a></li>
+<li><a href="https://www.facebook.com/share/p/1FCYF7ac8h/?mibextid=wwXIfr" target="_blank" rel="noopener">JEF Zambia - Event post</a></li></ul>
+<div class="two">{{ ph('Mongu Financial Awareness Action Clinic', 'Event photographs, Lewanika College of Nursing, 29 October 2026') }}{{ ph('Induction of 11 Financial Awareness Ambassadors', 'Group photograph and, with consent, individual portraits') }}</div>
+<h3>Media engagements</h3>
+<p><strong>Bulozi TV Breakfast Show - 29 October 2026.</strong> A discussion on financial literacy, youth development and financial awareness activities in Mongu and Western Province.</p>
+<p><strong>Oblate Radio Liseli - 31 October 2026.</strong> A radio discussion on the importance of financial literacy and estate planning, particularly for young people and families.</p>
+
+<h2 id="associations">Financial Awareness Associations - Universities and Colleges</h2>
+<p>JEF is working towards establishing Financial Awareness Associations in universities and colleges. These associations will provide a platform for students to strengthen their financial knowledge, share practical learning with peers, and participate in financial awareness activities on campus and in their communities.</p>
+<p>Proposed areas of activity include:</p>
+<ul class="checklist"><li>Student-led financial education and peer learning</li><li>Campus campaigns and financial awareness events</li><li>Student leadership and ambassador development</li><li>Mentorship and professional exposure opportunities, subject to available partnerships</li><li>Collaboration with university departments, student organisations and external institutions</li><li>Participation in April and October financial awareness campaigns</li></ul>
+<p>Universities and colleges interested in exploring an FA Association are invited to contact JEF through the <a href="#enquiry">partnership enquiry form</a>.</p>
+
+<h2 id="ambassadors">Financial Awareness Ambassadors</h2>
+<p>Financial Awareness Ambassadors support the movement by promoting financial education, mobilising young people, sharing approved learning resources and supporting community awareness activities.</p>
+<p>The first group of 11 Financial Awareness Ambassadors was inducted during the Mongu Financial Awareness Action Clinic on 29 October 2026. Their profiles and activities may be featured on this website with their consent.</p>
+<div class="team">{% for i in range(4) %}{{ ph('Ambassador profile', 'Name, photo, short biography and areas of engagement, with consent') }}{% endfor %}</div>
+
+<h2 id="community">Community, Youth and Entrepreneurship Engagement</h2>
+<p>JEF connects financial literacy to its wider youth empowerment mission. Financial education supports young people and entrepreneurs to make informed decisions, manage income, plan business activity, understand financial responsibilities and prepare for future needs.</p>
+<p>Engagement may take place through community programmes, youth networks, schools, colleges, universities, entrepreneur and SME platforms, digital campaigns, public events and media.</p>
+
+<h2 id="updates">News, Updates and Publications</h2>
+<p>Financial literacy articles, campaign announcements, event reports, media interviews, partner updates, newsletters and new educational resources are published on our <a href="{{ url_for('news') }}">News page</a> and in <a href="{{ url_for('reports') }}">Reports</a>.</p>
+
+<h2 id="partner-movement">Partner with the movement</h2>
+<p>We welcome collaboration with universities and colleges, government agencies, financial institutions, professional bodies, private-sector organisations, NGOs, community-based organisations, youth networks, development partners, media organisations and financial professionals.</p>
+<p>Partners can contribute through educational expertise, technical support, programme collaboration, mentorship, resources, campaign participation and institutional engagement.</p>
+<p><a class="btn" href="#enquiry">Partner With Us</a><a class="btn alt" href="#enquiry">Become an Ambassador</a><a class="btn alt" href="#enquiry">Establish an FA Association</a></p>
+<div id="enquiry" style="max-width:640px">{{ form('enquiry') }}</div>
+</div></section>{% endblock %}

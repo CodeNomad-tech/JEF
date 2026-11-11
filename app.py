@@ -32,11 +32,63 @@ ORG = {
 }
 
 
+def F(n, l, t="text", req=False, opts=None):
+    return (n, l, t, req, opts or [])
+
+
+FORMS = {
+    "contact": {"title": "Contact form", "button": "Send message", "ok": "Thank you for contacting JEF. We will respond as soon as possible.",
+        "fields": [F("name", "Full name", req=True), F("email", "Email", "email", True), F("phone", "Phone", "tel"), F("subject", "Subject"), F("message", "Message", "textarea", True)]},
+    "nominate": {"title": "Nominate a young person", "button": "Submit Nomination", "ok": "Thank you. Your nomination has been received.",
+        "fields": [F("name", "Your name", req=True), F("organisation", "Your organisation"), F("position", "Your position"), F("email", "Your email", "email", True), F("phone", "Your phone"),
+                   F("nominee_name", "Nominee’s name", req=True), F("nominee_phone", "Nominee’s phone"),
+                   F("category", "Category", "select", True, ["Grade 12 school leaver", "College or university student or graduate", "Community, faith group or informal sector (including local entrepreneur)"]),
+                   F("reason", "Why are you nominating this person?", "textarea", True)]},
+    "partner": {"title": "Partner with JEF", "button": "Submit", "ok": "Thank you. We will be in touch about partnering with JEF.",
+        "fields": [F("name", "Name", req=True), F("organisation", "Organisation"), F("email", "Email", "email", True), F("phone", "Phone"),
+                   F("how", "How would you like to partner?", "select", True, ["Programme collaboration", "Funding and sponsorship", "Technical expertise", "Internships and mentorship", "In-kind contribution", "Other"]),
+                   F("message", "Message", "textarea")]},
+    "volunteer": {"title": "Volunteer or mentor", "button": "Sign Up", "ok": "Thank you for offering your time. JEF will contact you soon.",
+        "fields": [F("name", "Name", req=True), F("email", "Email", "email", True), F("phone", "Phone"), F("expertise", "Area of expertise", req=True), F("availability", "Availability")]},
+    "movement": {"title": "Join the Financial Awareness Movement", "button": "Submit", "ok": "Thank you. JEF will be in touch about the Financial Awareness Movement.",
+        "fields": [F("name", "Name", req=True), F("organisation", "Organisation"), F("email", "Email", "email", True), F("phone", "Phone"), F("interest", "Area of interest"), F("message", "Message", "textarea")]},
+    "enquiry": {"title": "Financial literacy partnership enquiry", "button": "Submit", "ok": "Thank you. Your enquiry has been received.",
+        "fields": [F("name", "Full name", req=True), F("organisation", "Organisation"), F("position", "Position"), F("email", "Email", "email", True), F("phone", "Phone"),
+                   F("interest", "Type of interest", "select", True, ["Partner with the movement", "Become an Ambassador", "Establish an FA Association", "Other"]), F("message", "Message", "textarea")]},
+    "newsletter": {"title": "Newsletter", "button": "Subscribe", "ok": "Thank you for subscribing.", "fields": [F("email", "Email address", "email", True)]},
+}
+
+TEAM = [  # photo: path under static/ (e.g. "img/name.jpg"). Leave None to show the reserved photo space.
+    {"name": "Mr. Jimmy Sakala", "role": "Head of IT", "photo": "img/jimmy.jpg", "bio": ""},
+    {"name": "Board member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
+    {"name": "Board member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
+    {"name": "Board member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
+    {"name": "Management team member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
+    {"name": "Management team member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
+    {"name": "Staff member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
+]
+
+APR = [("lLc5lMFc-WQ", "Official Online Launch"), ("8Rcb563SF54", "Week 1 - Financial Literacy Series"), ("haRpuPpGbd8", "Week 2 - Financial Literacy Series"),
+       ("6NpnkdzFOMs", "Week 3 - Financial Literacy Series"), ("lpO1QYHCXtg", "Week 4 - Financial Literacy Series")]
+
+
 @app.context_processor
 def inject_globals():
     if "csrf_token" not in session:
         session["csrf_token"] = secrets.token_urlsafe(32)
-    return {"org": ORG, "year": datetime.now().year, "csrf_token": session["csrf_token"]}
+    return {"org": ORG, "year": datetime.now().year, "csrf_token": session["csrf_token"], "FORMS": FORMS, "TEAM": TEAM, "APR": APR}
+
+
+@app.after_request
+def log_page_view(resp):
+    """Basic privacy-friendly analytics: path + time only, no personal data."""
+    if request.method == "GET" and resp.status_code == 200 and resp.mimetype == "text/html" and not request.path.startswith("/admin"):
+        try:
+            with open(os.path.join(app.instance_path, "pageviews.jsonl"), "a", encoding="utf-8") as f:
+                f.write(json.dumps({"t": datetime.now(timezone.utc).isoformat(), "path": request.path}) + "\n")
+        except OSError:
+            pass
+    return resp
 
 
 def load_reports():
@@ -123,6 +175,51 @@ def save_message(name, sender, message):
 @app.get("/")
 def index():
     return render_template("index.html", reports=load_reports()[:3])
+
+
+def page(name):
+    key = name.replace("-", "_")
+    app.add_url_rule("/" + name, key + "_page", lambda: render_template(key + ".html"))
+
+
+for _p in ("about", "what-we-do", "financial-literacy", "yesdf", "impact", "get-involved", "contact"):
+    page(_p)
+
+
+@app.get("/news")
+def news():
+    return render_template("news.html", reports=load_reports())
+
+
+@app.post("/submit/<kind>")
+def submit(kind):
+    spec = FORMS.get(kind) or abort(404)
+    if not valid_csrf_token():
+        abort(400)
+    nxt = request.form.get("next", "")
+    nxt = nxt if nxt.startswith("/") and not nxt.startswith("//") else url_for("index")
+    if request.form.get("website"):
+        return redirect(nxt)
+    data, missing = {}, False
+    for n, label, t, req, opts in spec["fields"]:
+        v = request.form.get(n, "").strip()[:3000]
+        if req and not v or (t == "email" and v and "@" not in v):
+            missing = True
+        data[label] = v
+    if missing:
+        flash("Please complete the required fields and use a valid email address.", "error")
+        return redirect(nxt)
+    record = {"time": datetime.now(timezone.utc).isoformat(), "form": kind, **data}
+    with open(os.path.join(app.instance_path, "submissions.jsonl"), "a", encoding="utf-8") as f:
+        f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    email = next((v for (n, l, t, r, o), v in zip(spec["fields"], data.values()) if t == "email"), "")
+    body = "\n".join(f"{k}: {v}" for k, v in data.items())
+    try:
+        send_email(f"{spec['title']} ({data.get('Full name') or data.get('Name') or data.get('Your name') or 'website'})", email, body)
+    except Exception:
+        app.logger.exception("Email sending failed")
+    flash(spec["ok"], "ok")
+    return redirect(nxt)
 
 
 @app.get("/reports")

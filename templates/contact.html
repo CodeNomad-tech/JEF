@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from "macros.html" import yt, ph, form, head with context %}
+{% block title %}Contact JEF | Mongu, Western Province, Zambia{% endblock %}
+{% block content %}
+<section class="page-section">{{ head('Get in touch') }}
+<div class="wrap contact">
+<div><p>We would love to hear from you, whether you are a young person with a question, a school or church wanting to nominate someone, or a partner ready to work together.</p>
+<dl><dt>Visit us</dt><dd>Land of Hope Shop, Ilute Area, Mongu, Zambia</dd>
+<dt>Call or WhatsApp</dt><dd><a href="tel:+260979298827">+260 979 298 827</a> | <a href="tel:+260977721681">+260 977 721 681</a> | <a href="tel:+260967645429">+260 967 645 429</a> | <a href="tel:+260977853674">+260 977 853 674</a></dd>
+<dt>Email</dt><dd><a href="mailto:{{ org.email }}">{{ org.email }}</a></dd></dl></div>
+{{ form('contact') }}
+</div>
+<div class="wrap" id="privacy"><h2>Privacy notice (short form)</h2>
+<p>JEF collects personal information through our forms only to process applications, respond to enquiries, send updates you have asked for and report on our programmes. We do not sell your information. Applicant information is accessed only by authorised JEF staff and our selection partners. You may ask us to correct or delete your information at any time by writing to <a href="mailto:{{ org.email }}">{{ org.email }}</a>.</p></div>
+</section>{% endblock %}

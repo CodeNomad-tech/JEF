@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "macros.html" import yt, ph, form, head with context %}
+{% block title %}Get Involved | Partner, Volunteer or Donate to JEF{% endblock %}
+{% block content %}
+<section class="page-section">{{ head('Get involved', 'Partner with JEF, volunteer or mentor, or support young people in Western Province.') }}
+<div class="wrap">
+<h2 id="partner">Partner with us</h2>
+<p>Strategic partnerships amplify our reach, resources and long-term sustainability. We welcome government agencies, schools and colleges, NGOs, businesses, faith groups and development agencies who share our vision of an empowered young Zambia.</p>
+<p>Partners can support us through programme collaboration, funding and sponsorship, technical expertise, internships and mentorship, and in-kind contributions.</p>
+<div style="max-width:640px">{{ form('partner') }}</div>
+<h2 id="volunteer">Volunteer or mentor</h2>
+<p>Share your time, skills and experience with the next generation. We need trainers, mentors, event volunteers, creatives and professionals.</p>
+<div style="max-width:640px">{{ form('volunteer') }}</div>
+<h2 id="donate">Donate or sponsor a fellow</h2>
+<p>Your support helps a young person gain skills, mentorship and a path to self-reliance.</p>
+<p>Sponsorship enquiries: <a href="mailto:{{ org.email }}">{{ org.email }}</a></p>
+<h2 id="movement">Join the Financial Awareness Movement</h2>
+<p>JEF also welcomes organisations and individuals interested in supporting financial awareness and financial literacy in Zambia. Partners may contribute through institutional collaboration, educational expertise, mentorship, financial education resources, campaign support and community outreach.</p>
+<div style="max-width:640px">{{ form('movement') }}</div>
+</div></section>{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "macros.html" import yt, ph, form, head with context %}
+{% block title %}About JEF | Youth-Led Nonprofit in Mongu, Zambia{% endblock %}
+{% block content %}
+<section class="page-section">{{ head('About JEF') }}
+<div class="wrap">
+<h2>Who we are</h2>
+<p>The Jonuel Entrepreneurship Foundation (JEF) is a Zambian youth-led nonprofit organisation established in Mongu, Western Province. We are registered under PACRA as a Company by Guarantee.</p>
+<p>JEF began as a direct response to growing youth unemployment, poverty and lack of economic opportunity in under-served communities of Western Province. Our mission is to transform the lives of youth, women and persons with disabilities through entrepreneurship, skills development, agriculture, governance, gender justice advocacy and innovation.</p>
+<p>Since 2021, JEF has reached 6,710 youths and women through programmes that create awareness, support informed decision-making and promote hands-on skills.</p>
+<p>We believe that even if we cannot change the whole world, we can change the environment around us, by nurturing empowered, self-reliant and community-driven young people who become the architects of their own futures.</p>
+<div class="vm"><div><h3>Our Vision</h3><p>A Zambia where every young person is skilled, productive and purpose-driven, transforming potential into impact and creating pathways for inclusive economic and social development.</p></div>
+<div><h3>Our Mission</h3><p>To nurture a generation of empowered, ethical and innovative young Zambians through practical training, mentorship and institutional collaboration that bridges the gap between education, employment and enterprise creation.</p></div></div>
+<h2>Our values</h2>
+<div class="cards"><article class="card"><h3>Responsibility</h3><p>We are committed to ethical practice, transparency and accountable leadership in all we do.</p></article>
+<article class="card"><h3>Transformative</h3><p>We build generational impact by equipping young people with knowledge, resources and life opportunities.</p></article>
+<article class="card"><h3>Inclusive</h3><p>We design programmes that centre the voices and needs of youth, women and persons with disabilities.</p></article></div>
+
+<h2 id="leadership">Our leadership</h2>
+<div class="founder"><div><img class="fphoto" src="{{ url_for('static', filename='img/founder.jpg') }}" alt="Mr. Chindele Chingumbe, Founder and Executive Director of JEF"></div>
+<div><h3 style="margin-top:0">Mr. Chindele Chingumbe</h3><p><strong>Founder and Executive Director</strong></p>
+<p>Mr. Chindele Chingumbe is the founder of JEF. He is an International Youth Empowerment and Development Practitioner, a Mandela Washington Fellowship alumnus, a Board Member of the European Union Zambia Youth Sounding Board and a Gender Justice Activist. His experience at the Mandela Washington Fellowship inspired the creation of the YESDF Fellowship.</p></div></div>
+
+<h3>Board members and management team</h3>
+<p class="note">Photographs, names and two-line biographies are added here once approved. Each profile has a reserved portrait space. Edit the <code>TEAM</code> list in <code>app.py</code> to publish a profile.</p>
+<div class="team">{% for m in TEAM %}<div class="tcard">
+  {% if m.photo %}<img src="{{ url_for('static', filename=m.photo) }}" alt="{{ m.name }}">{% else %}{{ ph(m.role, 'Portrait, same crop for every profile') }}{% endif %}
+  <div class="fcap">{{ m.name }}<span>{{ m.role }}</span></div>{% if m.bio %}<p class="note">{{ m.bio }}</p>{% endif %}</div>{% endfor %}</div>
+
+<h2>Why partner with JEF</h2>
+<ul class="checklist"><li>Strong partnerships with communities, government and civil society organisations</li><li>A diverse and comprehensive programme portfolio</li><li>A dedicated youth-led leadership team</li><li>A unique focus on hands-on, practical projects</li><li>Personalised mentorship for every beneficiary</li><li>A government-endorsed fellowship programme (YESDF)</li></ul>
+<h2>How we are sustained</h2>
+<p>JEF runs a sustainable nonprofit model that combines community impact with diverse support: grants from local and international development agencies, sponsorships and institutional partnerships, agriculture and fresh produce projects, programme registration fees, and community donations and fundraising.</p>
+<h2>Our partners</h2>
+<p>Government ministries and agencies; local schools, colleges and universities; international and local NGOs; youth networks and IT communities.</p>
+</div></section>{% endblock %}

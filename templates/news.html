@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "macros.html" import yt, ph, form, head with context %}
+{% block title %}News and Events | Jonuel Entrepreneurship Foundation{% endblock %}
+{% block content %}
+<section class="page-section">{{ head('News and events', 'The latest news, events and announcements from JEF and the YESDF Fellowship.') }}
+<div class="wrap">
+<p><strong>Categories:</strong> YESDF | Programmes | Events | Press | Financial Literacy</p>
+<p>Follow our latest activities, announcements and fellowship deadlines.</p>
+<h2>Latest updates</h2>
+{% if reports %}<div class="report-list">{% for report in reports %}<article class="report-card">
+{% if report.image_filename %}<img class="report-image" src="{{ url_for('report_image', report_id=report.id) }}" alt="Image for {{ report.title }}">{% endif %}
+<h3><a href="{{ url_for('report_detail', report_id=report.id) }}">{{ report.title }}</a></h3><p>{{ report.description or "Read the full report." }}</p><time datetime="{{ report.published_at }}">{{ report.published_at[:10] }}</time></article>{% endfor %}</div>
+{% else %}<p class="note">No posts have been published yet. Approved news will appear here with its date, summary and link.</p>{% endif %}
+<h2>Upcoming events</h2>
+<p class="note">Upcoming events (title, date, venue and a Learn more link) will be listed here.</p>
+<p>Recent financial literacy campaigns are archived on the <a href="{{ url_for('financial_literacy_page') }}#april">Financial Literacy page</a>.</p>
+</div></section>{% endblock %}

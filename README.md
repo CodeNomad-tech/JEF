@@ -17,6 +17,14 @@ Open http://127.0.0.1:5000
     static/css/style.css   styles (colours are CSS variables at the top)
     static/img/            founder.jpg, jimmy.jpg, team-member.jpg
 
+## Pages (from the website content pack)
+/ (home), /about, /what-we-do, /financial-literacy, /yesdf, /impact, /news, /get-involved, /contact, /reports.
+Staff and board profiles: edit the TEAM list in app.py (set `photo` to a file under static/ to replace the reserved photo space).
+All forms save to instance/submissions.jsonl (and email JEF when MAIL_* is set). Page views are logged to instance/pageviews.jsonl.
+
+## Light / dark mode
+A Dark/Light button in the header switches the theme. The first visit follows the visitor's device setting; their choice is then remembered in the browser. Colours are CSS variables at the top of static/css/style.css.
+
 ## Contact form
 Every message is saved to instance/messages.jsonl. To also email it to JEF,
 set the MAIL_* variables from .env.example (Gmail needs an App Password).

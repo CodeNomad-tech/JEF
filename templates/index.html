@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block body_class %}landing-mode{% endblock %}
+{% from "macros.html" import form with context %}
 {% block content %}
 <section id="welcome" class="welcome" aria-labelledby="welcome-title">
 <div class="wrap welcome-content">
@@ -24,106 +25,95 @@
     </div>
   </div>
 
-  <section id="about"><div class="wrap about">
-    <div>
-      <h2>About JEF</h2>
-      <p>The Jonuel Entrepreneurship Foundation was founded in 2020 by Mr. Chindele Chingumbe as a direct response to youth unemployment, poverty and limited economic opportunity in Western Province.</p>
-      <p>We believe that even if we cannot change the whole world, we can change the environment around us, by nurturing self-reliant, community-driven young people who become the architects of their own futures.</p>
-    </div>
-    <div>
-      <img class="fphoto" src="{{ url_for('static', filename='img/founder.jpg') }}" alt="Mr. Chindele Chingumbe, Founder and Executive Director of JEF">
-      <div class="fcap">Mr. Chindele Chingumbe<span>Founder and Executive Director</span></div>
-    </div>
-  </div></section>
-
-  <section id="vision"><div class="wrap">
-    <div class="vm">
-      <div><h3>Our vision</h3><p>A Zambia where every young person is skilled, productive and purpose-driven, transforming potential into impact and creating pathways for inclusive economic and social development.</p></div>
-      <div class="mission"><article><h3>Our mission</h3><p>To nurture a generation of empowered, ethical and innovative young Zambians through practical training, mentorship and institutional collaboration that bridges the gap between education, employment and enterprise creation.</p></article><img src="{{ url_for('static', filename='img/team-member.jpg') }}" alt="A JEF team member"></div>
-    </div>
+  <section id="about"><div class="wrap">
+    <h2>Who we are</h2>
+    <p>The Jonuel Entrepreneurship Foundation (JEF) is a Zambian youth-led nonprofit organisation based in Mongu, Western Province. We exist to transform the lives of youth, women and persons with disabilities through entrepreneurship, skills development, agriculture, governance, gender justice advocacy and innovation.</p>
+    <p>We believe that even if we cannot change the whole world, we can change the environment around us, by nurturing empowered, self-reliant and community-driven young people who become the architects of their own futures.</p>
+    <a class="btn" href="{{ url_for('about_page') }}">Read Our Story</a>
+    <div class="stats"><div><b>6,710+</b><span>youths and women reached through our programmes</span></div><div><b>5</b><span>thematic areas of focus</span></div><div><b>1</b><span>flagship fellowship: YESDF</span></div></div>
   </div></section>
 
   <section id="programs"><div class="wrap">
-    <h2>Our five focus areas</h2>
-    <p class="sub">Each area is grounded in community need and a commitment to inclusive development.</p>
+    <h2>What we do</h2>
     <div class="cards">
-      <article class="card"><h3>Skills and entrepreneurship</h3><p>Practical training in agriculture, tailoring, digital technology and business, with mentorship and incubation support.</p></article>
-      <article class="card"><h3>Governance and civic advocacy</h3><p>Civic literacy, youth participation in decision-making and advocacy for accountable leadership.</p></article>
-      <article class="card"><h3>Gender justice and SRH</h3><p>Awareness campaigns and community dialogues on gender-based violence, early marriage and reproductive health.</p></article>
-      <article class="card"><h3>Climate change and agriculture</h3><p>Climate-smart farming, agribusiness and fresh produce skills for young agripreneurs.</p></article>
-      <article class="card"><h3>Mental health support</h3><p>Awareness, peer support and psychosocial tools that build emotional resilience among youth.</p></article>
+      <article class="card"><h3>Skills and Entrepreneurship</h3><p>Practical, market-ready skills and incubation support that help young people create their own income.</p></article>
+      <article class="card"><h3>Governance and Civic Engagement</h3><p>Civic literacy and youth voices in decision-making, for transparent and accountable leadership.</p></article>
+      <article class="card"><h3>Gender Justice and SRH</h3><p>Equal rights, safe spaces and accurate health information for young women, girls and persons with disabilities.</p></article>
+      <article class="card"><h3>Climate Change and Agriculture</h3><p>Climate-smart farming and agribusiness that build food security and resilient livelihoods.</p></article>
+      <article class="card"><h3>Mental Health and Psychosocial Support</h3><p>Peer support and awareness that help young people build emotional resilience.</p></article>
     </div>
   </div></section>
 
-  <section id="impact"><div class="wrap">
-    <h2>What we have done</h2>
-    <p class="sub">Programs that have helped participants start farms, tailoring businesses and digital careers.</p>
+  <section id="fl"><div class="wrap"><div class="feature">
+    <p class="eyebrow">Featured initiative</p><h2>Financial Awareness and Financial Literacy</h2>
+    <p>Through collaboration with The Financial Awareness Foundation (TFAF) and the Centre for Financial Literacy Education Africa (CFLE-Africa), JEF supports practical financial education for young people, families, entrepreneurs and communities. Activities include the April Financial Literacy Month campaign, October Estate &amp; Gift Planning Awareness Month, educational webinars, digital resources and community engagement.</p>
+    <a class="btn" href="{{ url_for('financial_literacy_page') }}">Explore Financial Literacy</a>
+  </div></div></section>
+
+  <section id="yesdf"><div class="wrap"><div class="feature alt2">
+    <p class="eyebrow">Featured programme</p><h2>The YESDF Fellowship</h2>
+    <p><strong>Youth Empowerment and Skills Development Fellowship. Empowered to Lead, Skilled to Succeed.</strong></p>
+    <p>YESDF is JEF&rsquo;s flagship fellowship, delivered with the Department of Youth, Western Province. Each year, 200 young people aged 18 to 35 join an intensive boot camp in entrepreneurship, leadership, integrity and practical skills, followed by six months of mentorship.</p>
+    <a class="btn" href="{{ url_for('yesdf_page') }}#apply">Apply Now</a><a class="btn alt" href="{{ url_for('yesdf_page') }}#programme">See How It Works</a>
+  </div></div></section>
+
+  <section id="challenge"><div class="wrap">
+    <h2>The challenge we are responding to</h2>
+    <p class="sub">Western Province faces a convergence of challenges that leave young people, women and persons with disabilities behind.</p>
     <div class="cards">
-      <article class="card"><h3>Agribusiness</h3><p>Training in backyard gardening, poultry production and climate-smart agriculture.</p></article>
-      <article class="card"><h3>Digital skills</h3><p>Computing, Microsoft Office, graphic design, digital marketing and data entry.</p></article>
-      <article class="card"><h3>Tailoring and fashion</h3><p>Tailoring, cutting and fashion design, especially for young women.</p></article>
-      <article class="card"><h3>Fairs and summits</h3><p>Entrepreneurship skills fairs and youth summits connecting people with mentors and markets.</p></article>
+      <article class="card"><h3>Limited vocational training</h3><p>Accessible technical and vocational institutions are scarce. Skills such as tailoring, agriculture and digital technology are out of reach for many because of cost, distance or lack of awareness.</p></article>
+      <article class="card"><h3>High youth unemployment</h3><p>Youth unemployment among those aged 15 to 35 exceeds 24% nationally (ZamStats, 2022), and Western Province is consistently among the most affected regions.</p></article>
+      <article class="card"><h3>Poverty and exclusion</h3><p>Over 82% of Western Province&rsquo;s population lives below the poverty line. Women, youth and persons with disabilities face compounded vulnerability.</p></article>
     </div>
   </div></section>
 
-  <section id="team"><div class="wrap">
-    <h2>Leadership</h2>
-    <p class="sub">JEF is led by a youth-led team of office bearers.</p>
-    <div class="people">
-      <div class="person"><img src="{{ url_for('static', filename='img/founder.jpg') }}" alt="Mr. Chindele Chingumbe"><div class="fcap">Mr. Chindele Chingumbe<span>Founder and Executive Director</span></div></div>
-      <div class="person"><img src="{{ url_for('static', filename='img/jimmy.jpg') }}" alt="Mr. Jimmy Sakala"><div class="fcap">Mr. Jimmy Sakala<span>Head of IT</span></div></div>
+  <section id="approach"><div class="wrap">
+    <h2>Our approach</h2>
+    <div class="cards">
+      <article class="card"><h3>1. Practical Skills Training</h3><p>Hands-on training in agriculture, tailoring and fashion design, digital skills and entrepreneurship.</p></article>
+      <article class="card"><h3>2. Mentorship and Incubation</h3><p>Personal mentorship, peer networks and business support to turn ideas into viable enterprises.</p></article>
+      <article class="card"><h3>3. Community Outreach and Advocacy</h3><p>Civic education and community engagement that mobilise participation and advocate for change.</p></article>
+      <article class="card"><h3>4. Institutional Collaboration</h3><p>Partnerships with government, schools, colleges, NGOs and development agencies to widen our reach.</p></article>
     </div>
-  </div></section>
-
-  <section id="join"><div class="wrap">
-    <div class="join">
-      <h2>Partner with JEF</h2>
-      <p>We work with government ministries, schools, colleges, NGOs and youth networks. If you want to fund, partner or volunteer, send us a message.</p>
-      <a class="btn" href="#contact">Email JEF</a>
-    </div>
+    <h3 class="mt">Our partners</h3>
+    <p>We work with government ministries and departments, schools, colleges and universities, local and international NGOs, youth networks and IT communities.</p>
   </div></section>
 
   <section id="reports"><div class="wrap">
-    <h2>Reports</h2>
-    <p class="sub">Read updates and reports on JEF's work and impact.</p>
+    <h2>Latest news</h2>
     {% if reports %}
       <div class="report-list">
         {% for report in reports %}
           <article class="report-card">
-            {% if report.image_filename %}
-              <img class="report-image" src="{{ url_for('report_image', report_id=report.id) }}" alt="Image for {{ report.title }}">
-            {% endif %}
+            {% if report.image_filename %}<img class="report-image" src="{{ url_for('report_image', report_id=report.id) }}" alt="Image for {{ report.title }}">{% endif %}
             <h3><a href="{{ url_for('report_detail', report_id=report.id) }}">{{ report.title }}</a></h3>
             <p>{{ report.description or "Read the full report." }}</p>
             <time datetime="{{ report.published_at }}">{{ report.published_at[:10] }}</time>
           </article>
         {% endfor %}
       </div>
-    {% else %}
-      <p class="note">Reports will be published here.</p>
-    {% endif %}
-    <a class="btn alt" href="{{ url_for('reports') }}">View all reports</a>
+    {% else %}<p class="note">The latest posts will appear here once they are published.</p>{% endif %}
+    <a class="btn alt" href="{{ url_for('news') }}">All news and events</a>
+  </div></section>
+
+  <section id="join"><div class="wrap">
+    <div class="join">
+      <h2>Join the movement</h2>
+      <p>There are many ways to support young people in Western Province.</p>
+      <a class="btn" href="{{ url_for('get_involved_page') }}#partner">Partner With Us</a> <a class="btn" href="{{ url_for('get_involved_page') }}#volunteer">Volunteer</a> <a class="btn" href="{{ url_for('get_involved_page') }}#donate">Donate</a>
+    </div>
   </div></section>
 
   <section id="contact"><div class="wrap contact">
     <div>
       <h2>Contact us</h2>
       <dl>
-        <dt>Office</dt><dd>Old Vision Empire Building, Chisonga Rd, Mongu, Western Province, Zambia</dd>
+        <dt>Office</dt><dd>Land of Hope Shop, Ilute Area, Mongu, Zambia</dd>
         <dt>Email</dt><dd><a href="mailto:{{ org.email }}">{{ org.email }}</a></dd>
-        <dt>Phone</dt><dd><a href="tel:+260979298827">+260 979 298 827</a><br><a href="tel:+260977721681">+260 977 721 681</a></dd>
+        <dt>Phone</dt><dd>+260 979 298 827<br>+260 977 721 681<br>+260 967 645 429<br>+260 977 853 674</dd>
       </dl>
     </div>
-    <form method="post" action="{{ url_for('contact') }}" aria-label="Contact form">
-      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <label>Your name<input name="name" required maxlength="100" autocomplete="name"></label>
-      <label>Your email<input name="email" type="email" required maxlength="150" autocomplete="email"></label>
-      <label>Message<textarea name="msg" required maxlength="3000"></textarea></label>
-      <button class="btn" type="submit">Send message</button>
-      {% with msgs = get_flashed_messages(with_categories=true) %}
-        {% for cat, m in msgs %}<p class="note flash {{ cat }}" role="status">{{ m }}</p>{% endfor %}
-      {% endwith %}
-    </form>
+    {{ form('contact') }}
   </div></section>
   </div>
 <script>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from "macros.html" import yt, ph, form, head with context %}
+{% block title %}Our Impact | JEF Stories, Results and Gallery{% endblock %}
+{% block content %}
+<section class="page-section">{{ head('Our impact') }}
+<div class="wrap">
+<p>Since 2021, JEF has reached 6,710 youths and women across Zambia through awareness, informed decision-making and hands-on skills programmes.</p>
+<p>Our graduates have started farming ventures and cooperatives, opened tailoring businesses, entered the digital economy and become active citizens who engage with leaders and institutions.</p>
+<div class="stats"><div><b>6,710+</b><span>youths and women reached</span></div><div><b>5</b><span>thematic areas</span></div><div><b>200</b><span>YESDF fellows each year</span></div></div>
+<h2>Stories</h2>
+<p class="note">Participant stories (photo, name, programme, a 100 to 200 word story and a quote) are published here with written consent.</p>
+<div class="team">{{ ph('Participant story', 'Approved photograph, with written consent') }}{{ ph('Participant story', 'Approved photograph, with written consent') }}{{ ph('Participant story', 'Approved photograph, with written consent') }}</div>
+<h2>Gallery</h2>
+<p class="note">Photo and video albums by programme and year, with captions and consent.</p>
+<div class="team">{{ ph('JEF programme gallery') }}{{ ph('JEF programme gallery') }}{{ ph('JEF programme gallery') }}{{ ph('JEF programme gallery') }}</div>
+<h2>Reports and downloads</h2>
+<p>Annual reports and other publications are listed on our <a href="{{ url_for('reports') }}">Reports page</a>. The JEF Organisation Profile and a YESDF Concept Note summary will be added as downloads once approved.</p>
+<a class="btn" href="{{ url_for('reports') }}">View reports</a>
+</div></section>{% endblock %}
