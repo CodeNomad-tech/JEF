@@ -4,15 +4,33 @@
 <section class="page-section">
   <article class="wrap report-detail">
     <a href="{{ url_for('reports') }}">&larr; All reports</a>
-    <h1 class="page-title">{{ report.title }}</h1>
+    <h1 class="page-title">
+      {% if report.title.startswith('http://') or report.title.startswith('https://') %}
+        <a href="{{ report.title }}" target="_blank" rel="noopener noreferrer" style="word-break: break-all;">{{ report.title }}</a>
+      {% else %}
+        {{ report.title }}
+      {% endif %}
+    </h1>
     <time datetime="{{ report.published_at }}">Published {{ report.published_at[:10] }}</time>
     {% if report.image_filename %}
       <img class="report-image report-detail-image" src="{{ url_for('report_image', report_id=report.id) }}" alt="Image for {{ report.title }}">
     {% endif %}
-    {% if report.description %}<p class="report-description">{{ report.description }}</p>{% endif %}
-    <p><a class="btn" href="{{ url_for('report_pdf', report_id=report.id, download=1) }}">Download PDF</a></p>
-    <iframe class="report-viewer" src="{{ url_for('report_pdf', report_id=report.id) }}" title="Full report: {{ report.title }}"></iframe>
-    <p>Your browser may not support embedded PDFs. <a href="{{ url_for('report_pdf', report_id=report.id) }}">Open the report PDF</a>.</p>
+    {% if report.title.startswith('http://') or report.title.startswith('https://') %}
+      <p style="margin-top: 14px;"><a class="btn" href="{{ report.title }}" target="_blank" rel="noopener noreferrer">Visit Link &rarr;</a></p>
+    {% endif %}
+    {% if report.description %}
+      {% if report.description.startswith('http://') or report.description.startswith('https://') %}
+        <p style="margin-top: 14px;"><a class="btn" href="{{ report.description }}" target="_blank" rel="noopener noreferrer">Visit Link &rarr;</a></p>
+        <p class="report-description"><a href="{{ report.description }}" target="_blank" rel="noopener noreferrer" style="word-break: break-all;">{{ report.description }}</a></p>
+      {% else %}
+        <p class="report-description">{{ report.description | urlize }}</p>
+      {% endif %}
+    {% endif %}
+    {% if report.filename %}
+      <p><a class="btn" href="{{ url_for('report_pdf', report_id=report.id, download=1) }}">Download PDF</a></p>
+      <iframe class="report-viewer" src="{{ url_for('report_pdf', report_id=report.id) }}" title="Full report: {{ report.title }}"></iframe>
+      <p>Your browser may not support embedded PDFs. <a href="{{ url_for('report_pdf', report_id=report.id) }}">Open the report PDF</a>.</p>
+    {% endif %}
   </article>
 </section>
 {% endblock %}

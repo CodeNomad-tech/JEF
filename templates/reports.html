@@ -13,8 +13,29 @@
             {% if report.image_filename %}
               <img class="report-image" src="{{ url_for('report_image', report_id=report.id) }}" alt="Image for {{ report.title }}">
             {% endif %}
-            <h2><a href="{{ url_for('report_detail', report_id=report.id) }}">{{ report.title }}</a></h2>
-            <p>{{ report.description or "Read the full report." }}</p>
+            <h2>
+              {% if report.title.startswith('http://') or report.title.startswith('https://') %}
+                <a href="{{ report.title }}" target="_blank" rel="noopener noreferrer" style="word-break: break-all;">{{ report.title }}</a>
+              {% else %}
+                <a href="{{ url_for('report_detail', report_id=report.id) }}">{{ report.title }}</a>
+              {% endif %}
+            </h2>
+            {% if report.description and report.description != report.title %}
+              <p>
+                {% if report.description.startswith('http://') or report.description.startswith('https://') %}
+                  <a href="{{ report.description }}" target="_blank" rel="noopener noreferrer" style="word-break: break-all;">{{ report.description }}</a>
+                {% else %}
+                  {{ report.description | urlize }}
+                {% endif %}
+              </p>
+            {% elif report.filename %}
+              <p>Read the full report.</p>
+            {% endif %}
+            {% if report.title.startswith('http://') or report.title.startswith('https://') %}
+              <p style="margin-top: 10px;"><a class="btn sm" href="{{ report.title }}" target="_blank" rel="noopener noreferrer">Open Link &rarr;</a></p>
+            {% elif report.description and (report.description.startswith('http://') or report.description.startswith('https://')) %}
+              <p style="margin-top: 10px;"><a class="btn sm" href="{{ report.description }}" target="_blank" rel="noopener noreferrer">Open Link &rarr;</a></p>
+            {% endif %}
             <time datetime="{{ report.published_at }}">{{ report.published_at[:10] }}</time>
           </article>
         {% endfor %}

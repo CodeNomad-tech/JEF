@@ -14,13 +14,16 @@ class ReportRoutesTests(unittest.TestCase):
         cls.temp_dir = tempfile.TemporaryDirectory()
         cls.original_reports_file = website.REPORTS_FILE
         cls.original_reports_dir = website.REPORT_FILES_DIR
+        cls.original_db_path = website.DB_PATH
         cls.original_secret_key = website.app.config["SECRET_KEY"]
         website.REPORTS_FILE = os.path.join(cls.temp_dir.name, "reports.json")
         website.REPORT_FILES_DIR = os.path.join(cls.temp_dir.name, "reports")
+        website.DB_PATH = os.path.join(cls.temp_dir.name, "test_jef.db")
         os.makedirs(website.REPORT_FILES_DIR)
+        website.init_db()
         cls.environment = patch.dict(
             os.environ,
-            {"ADMIN_PASSWORD": "test-admin-password", "SECRET_KEY": "test-secret-key"},
+            {"SECRET_KEY": "test-secret-key"},
         )
         cls.environment.start()
         website.app.config["SECRET_KEY"] = "test-secret-key"
@@ -31,6 +34,7 @@ class ReportRoutesTests(unittest.TestCase):
         cls.environment.stop()
         website.REPORTS_FILE = cls.original_reports_file
         website.REPORT_FILES_DIR = cls.original_reports_dir
+        website.DB_PATH = cls.original_db_path
         website.app.config["SECRET_KEY"] = cls.original_secret_key
         cls.temp_dir.cleanup()
 
@@ -51,7 +55,7 @@ class ReportRoutesTests(unittest.TestCase):
         token = self.csrf_token()
         response = self.client.post(
             "/admin/login",
-            data={"csrf_token": token, "password": "test-admin-password"},
+            data={"csrf_token": token, "username": "admin", "password": "JEF@003"},
         )
         self.assertEqual(response.status_code, 302)
 
@@ -60,12 +64,12 @@ class ReportRoutesTests(unittest.TestCase):
         token = self.csrf_token()
         response = self.client.post(
             "/admin/login",
-            data={"csrf_token": token, "password": "wrong-password"},
+            data={"csrf_token": token, "username": "admin", "password": "wrong-password"},
             follow_redirects=True,
         )
-        self.assertIn(b"The password is incorrect.", response.data)
+        self.assertIn(b"Invalid username or password.", response.data)
         self.assertEqual(
-            self.client.post("/admin/login", data={"password": "test-admin-password"}).status_code,
+            self.client.post("/admin/login", data={"username": "admin", "password": "JEF@003"}).status_code,
             400,
         )
 
@@ -184,10 +188,32 @@ class ReportRoutesTests(unittest.TestCase):
         self.assertIn(b"does not appear to be a valid PDF", response.data)
         self.assertEqual(website.load_reports(), [])
 
-    def test_admin_is_disabled_without_deployment_secrets(self):
-        with patch.dict(os.environ, {"ADMIN_PASSWORD": "test-admin-password"}, clear=True):
-            response = self.client.get("/admin/login")
-        self.assertEqual(response.status_code, 503)
+    def test_admin_can_publish_without_pdf(self):
+        self.sign_in()
+        token = re.search(
+            rb'name="csrf_token" value="([^"]+)"',
+            self.client.get("/admin/reports").data,
+        ).group(1).decode()
+        response = self.client.post(
+            "/admin/reports",
+            data={
+                "csrf_token": token,
+                "title": "Post without PDF",
+                "description": "https://www.facebook.com/share/p/1FzXCuT3uv/?mibextid=wwXIfr",
+            },
+            content_type="multipart/form-data",
+        )
+        self.assertEqual(response.status_code, 302)
+        reports = website.load_reports()
+        self.assertEqual(len(reports), 1)
+        self.assertIsNone(reports[0].get("filename"))
+        details = self.client.get(f"/reports/{reports[0]['id']}")
+        self.assertEqual(details.status_code, 200)
+        self.assertIn(b"Post without PDF", details.data)
+        self.assertIn(b"Visit Link", details.data)
+        self.assertNotIn(b"Download PDF", details.data)
+        pdf = self.client.get(f"/reports/{reports[0]['id']}/pdf")
+        self.assertEqual(pdf.status_code, 404)
 
 
 if __name__ == "__main__":

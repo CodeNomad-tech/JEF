@@ -4,12 +4,14 @@ import hmac
 import os
 import secrets
 import smtplib
+import sqlite3
 import uuid
 from datetime import datetime, timezone
 from email.message import EmailMessage
 
 from dotenv import load_dotenv
 from flask import Flask, abort, flash, redirect, render_template, request, send_from_directory, session, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
 load_dotenv()
@@ -25,6 +27,42 @@ os.makedirs(app.instance_path, exist_ok=True)
 REPORTS_FILE = os.path.join(app.instance_path, "reports.json")
 REPORT_FILES_DIR = os.path.join(app.instance_path, "reports")
 os.makedirs(REPORT_FILES_DIR, exist_ok=True)
+
+# ---- Admin database ----
+DB_PATH = os.path.join(app.instance_path, "jef.db")
+
+
+def get_db():
+    """Return a connection to the admin SQLite database."""
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def init_db():
+    """Create the admin_users table and seed the default admin account."""
+    conn = get_db()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS admin_users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            created_at TEXT NOT NULL DEFAULT (datetime('now'))
+        )
+    """)
+    conn.commit()
+    # Seed the default admin if no admin exists yet
+    row = conn.execute("SELECT id FROM admin_users WHERE username = ?", ("admin",)).fetchone()
+    if row is None:
+        conn.execute(
+            "INSERT INTO admin_users (username, password_hash) VALUES (?, ?)",
+            ("admin", generate_password_hash("JEF@003")),
+        )
+        conn.commit()
+    conn.close()
+
+
+init_db()
 
 ORG = {
     "name": "Jonuel Entrepreneurship Foundation (JEF)",
@@ -60,12 +98,25 @@ FORMS = {
 
 TEAM = [  # photo: path under static/ (e.g. "img/name.jpg"). Leave None to show the reserved photo space.
     {"name": "Mr. Jimmy Sakala", "role": "Head of IT", "photo": "img/jimmy.jpg", "bio": ""},
-    {"name": "Board member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
-    {"name": "Board member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
-    {"name": "Board member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
-    {"name": "Management team member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
-    {"name": "Management team member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
-    {"name": "Staff member", "role": "Official title to be confirmed", "photo": None, "bio": ""},
+    {"name": "Mr. Chisenga Mumba", "role": "Deputy Executive Director", "photo": "img/JEF2.jpeg", "bio": "", "imgstyle": "object-position:center 20%"},
+    {"name": "Mr. Prince Kapeya", "role": "Chief Operations Officer", "photo": "img/JEF4.jpeg", "bio": ""},
+    {"name": "Dr. Wakisa Ndovie", "role": "Programs Manager", "photo": "img/JEF5.jpeg", "bio": ""},
+    {"name": "Ms. Harriet Lungu", "role": "Executive Secretary", "photo": "img/JEF6.jpeg", "bio": ""},
+    {"name": "Ms. Isabel Biemba", "role": "Head of Finance", "photo": "img/JEF7.jpeg", "bio": ""},
+    {"name": "Mr. Bill Sam Geebli", "role": "Logistics and Resource Manager", "photo": "img/JEF8.jpeg", "bio": ""},
+    {"name": "Ms. Choolwe Chiiko", "role": "Academics Coordinator", "photo": "img/JEF9.jpeg", "bio": ""},
+    {"name": "Ms. Monde Kalimukwa", "role": "Communications & Advocacy Coordinator", "photo": "img/JEF10.jpeg", "bio": ""},
+    {"name": "Mr. Mwitila Lutangu", "role": "Youth Coordinator", "photo": "img/JEF11.jpeg", "bio": ""},
+    {"name": "Mr. Lucky Mukubonda C.C", "role": "Graphic Designer", "photo": "img/JEF12.jpeg", "bio": ""},
+    {"name": "Ms. Gertrude Kambeu", "role": "President", "photo": "img/JEF13.jpeg", "bio": ""},
+    {"name": "Mr. Ignatius Ndalameyu", "role": "Vice President", "photo": "img/JEF14.jpeg", "bio": ""},
+    {"name": "Mr. Mpulu Polota", "role": "Secretary General", "photo": "img/JEF15.jpeg", "bio": ""},
+    {"name": "Ms. Mayamba Kekelwa", "role": "Deputy Secretary General", "photo": "img/JEF16.jpeg", "bio": ""},
+    {"name": "Mr. Mathews Sababwa", "role": "Treasurer", "photo": "img/JEF17.jpeg", "bio": ""},
+    {"name": "Ms. Kasiwa Namushi", "role": "Deputy Treasurer", "photo": "img/JEF18.jpeg", "bio": ""},
+    {"name": "Ms. Njekwa In'utu", "role": "Programs Manager", "photo": "img/JEF19.jpeg", "bio": ""},
+    {"name": "Mr. Luneta Jimmy", "role": "Research and Education Director", "photo": "img/JEF20.jpeg", "bio": ""},
+    {"name": "Ms. Naomi Chibesa", "role": "Events Coordinator and Public Relations Officer", "photo": "img/JEF21.jpeg", "bio": ""},
 ]
 
 APR = [("lLc5lMFc-WQ", "Official Online Launch"), ("8Rcb563SF54", "Week 1 - Financial Literacy Series"), ("haRpuPpGbd8", "Week 2 - Financial Literacy Series"),
@@ -182,8 +233,13 @@ def page(name):
     app.add_url_rule("/" + name, key + "_page", lambda: render_template(key + ".html"))
 
 
-for _p in ("about", "what-we-do", "financial-literacy", "yesdf", "impact", "get-involved", "contact"):
+for _p in ("about", "what-we-do", "financial-literacy", "yesdf", "get-involved", "contact"):
     page(_p)
+
+
+@app.get("/impact")
+def impact_page():
+    return render_template("impact.html", reports=load_reports())
 
 
 @app.get("/news")
@@ -235,9 +291,12 @@ def report_detail(report_id):
 @app.get("/reports/<report_id>/pdf")
 def report_pdf(report_id):
     report = find_report(report_id)
+    filename = report.get("filename")
+    if not filename:
+        abort(404)
     return send_from_directory(
         REPORT_FILES_DIR,
-        report["filename"],
+        filename,
         mimetype="application/pdf",
         as_attachment=request.args.get("download") == "1",
         download_name=f"{secure_filename(report['title']) or 'report'}.pdf",
@@ -264,26 +323,25 @@ def report_image(report_id):
 
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
-    admin_password = os.environ.get("ADMIN_PASSWORD")
-    if not admin_password or not os.environ.get("SECRET_KEY"):
-        return render_template("admin_login.html", configuration_error=True), 503
-
     if request.method == "POST":
         if not valid_csrf_token():
             abort(400)
-        if hmac.compare_digest(request.form.get("password", ""), admin_password):
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+        conn = get_db()
+        user = conn.execute("SELECT * FROM admin_users WHERE username = ?", (username,)).fetchone()
+        conn.close()
+        if user and check_password_hash(user["password_hash"], password):
             session.clear()
             session["admin_authenticated"] = True
             return redirect(url_for("admin_reports"))
-        flash("The password is incorrect.", "error")
+        flash("Invalid username or password.", "error")
 
     return render_template("admin_login.html", configuration_error=False)
 
 
 @app.route("/admin/reports", methods=["GET", "POST"])
 def admin_reports():
-    if not os.environ.get("ADMIN_PASSWORD") or not os.environ.get("SECRET_KEY"):
-        return render_template("admin_login.html", configuration_error=True), 503
     if not session.get("admin_authenticated"):
         return redirect(url_for("admin_login"))
 
@@ -294,16 +352,19 @@ def admin_reports():
         description = request.form.get("description", "").strip()[:2000]
         uploaded_file = request.files.get("pdf")
         uploaded_image = request.files.get("image")
-        if not title or uploaded_file is None or not uploaded_file.filename:
-            flash("A report title and PDF file are required.", "error")
+        if not title:
+            flash("A report title is required.", "error")
             return redirect(url_for("admin_reports"))
-        if not secure_filename(uploaded_file.filename).lower().endswith(".pdf"):
-            flash("Please upload a PDF file.", "error")
-            return redirect(url_for("admin_reports"))
-        if uploaded_file.stream.read(5) != b"%PDF-":
-            flash("The uploaded file does not appear to be a valid PDF.", "error")
-            return redirect(url_for("admin_reports"))
-        uploaded_file.stream.seek(0)
+
+        has_pdf = bool(uploaded_file and uploaded_file.filename)
+        if has_pdf:
+            if not secure_filename(uploaded_file.filename).lower().endswith(".pdf"):
+                flash("Please upload a PDF file.", "error")
+                return redirect(url_for("admin_reports"))
+            if uploaded_file.stream.read(5) != b"%PDF-":
+                flash("The uploaded file does not appear to be a valid PDF.", "error")
+                return redirect(url_for("admin_reports"))
+            uploaded_file.stream.seek(0)
 
         image_extension = None
         if uploaded_image is not None and uploaded_image.filename:
@@ -314,27 +375,29 @@ def admin_reports():
 
         reports = load_reports()
         report_id = uuid.uuid4().hex
-        filename = f"{report_id}.pdf"
+        filename = f"{report_id}.pdf" if has_pdf else None
         image_filename = f"{report_id}{image_extension}" if image_extension else None
         report = {
             "id": report_id,
             "title": title,
             "description": description,
-            "filename": filename,
             "published_at": datetime.now(timezone.utc).isoformat(),
         }
+        if filename:
+            report["filename"] = filename
         if image_filename:
             report["image_filename"] = image_filename
         reports.insert(0, report)
-        pdf_path = os.path.join(REPORT_FILES_DIR, filename)
+        pdf_path = os.path.join(REPORT_FILES_DIR, filename) if filename else None
         image_path = os.path.join(REPORT_FILES_DIR, image_filename) if image_filename else None
         try:
-            uploaded_file.save(pdf_path)
+            if filename:
+                uploaded_file.save(pdf_path)
             if image_filename:
                 uploaded_image.save(image_path)
             save_reports(reports)
         except (OSError, TypeError, ValueError):
-            if os.path.exists(pdf_path):
+            if pdf_path and os.path.exists(pdf_path):
                 os.remove(pdf_path)
             if image_path and os.path.exists(image_path):
                 os.remove(image_path)
@@ -347,8 +410,6 @@ def admin_reports():
 
 @app.post("/admin/reports/<report_id>/delete")
 def delete_report(report_id):
-    if not os.environ.get("ADMIN_PASSWORD") or not os.environ.get("SECRET_KEY"):
-        return render_template("admin_login.html", configuration_error=True), 503
     if not session.get("admin_authenticated"):
         return redirect(url_for("admin_login"))
     if not valid_csrf_token():

@@ -22,9 +22,8 @@
 <p>Mr. Chindele Chingumbe is the founder of JEF. He is an International Youth Empowerment and Development Practitioner, a Mandela Washington Fellowship alumnus, a Board Member of the European Union Zambia Youth Sounding Board and a Gender Justice Activist. His experience at the Mandela Washington Fellowship inspired the creation of the YESDF Fellowship.</p></div></div>
 
 <h3>Board members and management team</h3>
-<p class="note">Photographs, names and two-line biographies are added here once approved. Each profile has a reserved portrait space. Edit the <code>TEAM</code> list in <code>app.py</code> to publish a profile.</p>
 <div class="team">{% for m in TEAM %}<div class="tcard">
-  {% if m.photo %}<img src="{{ url_for('static', filename=m.photo) }}" alt="{{ m.name }}">{% else %}{{ ph(m.role, 'Portrait, same crop for every profile') }}{% endif %}
+  {% if m.photo %}<img src="{{ url_for('static', filename=m.photo) }}" alt="{{ m.name }}"{% if m.imgstyle %} style="{{ m.imgstyle }}"{% endif %}>{% else %}{{ ph(m.role, 'Portrait, same crop for every profile') }}{% endif %}
   <div class="fcap">{{ m.name }}<span>{{ m.role }}</span></div>{% if m.bio %}<p class="note">{{ m.bio }}</p>{% endif %}</div>{% endfor %}</div>
 
 <h2>Why partner with JEF</h2>

@@ -6,7 +6,6 @@
     <div class="admin-heading">
       <div>
         <h1 class="page-title">Manage reports</h1>
-        <p>Publish a PDF report for visitors to read, with an optional image.</p>
       </div>
       <form method="post" action="{{ url_for('admin_logout') }}">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -17,9 +16,9 @@
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <label>Report title<input name="title" required maxlength="160"></label>
       <label>Short description (optional)<textarea name="description" maxlength="2000"></textarea></label>
-      <label>Report PDF<input type="file" name="pdf" accept="application/pdf,.pdf" required></label>
+      <label>Report PDF (optional)<input type="file" name="pdf" accept="application/pdf,.pdf"></label>
       <label>Report image (optional)<input type="file" name="image" accept="image/png,image/jpeg,image/gif,image/webp,.png,.jpg,.jpeg,.gif,.webp"></label>
-      <p class="note">Images: PNG, JPEG, GIF or WebP, up to 5 MB. The PDF and image together must be under 20 MB.</p>
+      <p class="note">Optional files: PDF (up to 20 MB), Image (PNG, JPEG, GIF or WebP up to 5 MB).</p>
       <button class="btn" type="submit">Publish report</button>
       {% with msgs = get_flashed_messages(with_categories=true) %}
         {% for cat, message in msgs %}<p class="flash {{ cat }}" role="status">{{ message }}</p>{% endfor %}
@@ -30,7 +29,19 @@
       <div class="report-list">
         {% for report in reports %}
           <article class="report-card">
-            <h3><a href="{{ url_for('report_detail', report_id=report.id) }}">{{ report.title }}</a></h3>
+            <h3>
+              {% if report.title.startswith('http://') or report.title.startswith('https://') %}
+                <a href="{{ report.title }}" target="_blank" rel="noopener noreferrer" style="word-break: break-all;">{{ report.title }}</a>
+              {% else %}
+                <a href="{{ url_for('report_detail', report_id=report.id) }}">{{ report.title }}</a>
+              {% endif %}
+            </h3>
+            {% if report.description and report.description != report.title %}
+              <p>{{ report.description | urlize }}</p>
+            {% endif %}
+            {% if report.title.startswith('http://') or report.title.startswith('https://') %}
+              <p><a class="btn sm" href="{{ report.title }}" target="_blank" rel="noopener noreferrer">Open Link &rarr;</a></p>
+            {% endif %}
             <time datetime="{{ report.published_at }}">{{ report.published_at[:10] }}</time>
             <form method="post" action="{{ url_for('delete_report', report_id=report.id) }}" onsubmit="return confirm('Delete this report and its uploaded files?');">
               <input type="hidden" name="csrf_token" value="{{ csrf_token }}">

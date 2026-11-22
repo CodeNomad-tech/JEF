@@ -10,7 +10,8 @@
       <p>Sign in to publish JEF reports.</p>
       <form method="post" action="{{ url_for('admin_login') }}">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <label>Admin password<input type="password" name="password" required autocomplete="current-password"></label>
+        <label>Username<input type="text" name="username" required autocomplete="username"></label>
+        <label>Password<input type="password" name="password" required autocomplete="current-password"></label>
         <button class="btn" type="submit">Sign in</button>
         {% with msgs = get_flashed_messages(with_categories=true) %}
           {% for cat, message in msgs %}<p class="flash {{ cat }}" role="alert">{{ message }}</p>{% endfor %}
